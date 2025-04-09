@@ -14,7 +14,6 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 @Data
 public class OrderBook {
     private String symbol;
-
     // 买盘：价格降序 -> 时间升序
     private final TreeMap<BigDecimal, TimePriorityQueue> bids = new TreeMap<>(Comparator.reverseOrder());
 
@@ -61,6 +60,11 @@ public class OrderBook {
         } finally {
             lock.writeLock().unlock();
         }
+    }
+
+
+    public TreeMap<BigDecimal, TimePriorityQueue> getCounter(String side) {
+        return "BUY".equals(side) ? this.getAskOrders() : this.getBidOrders();
     }
 
 

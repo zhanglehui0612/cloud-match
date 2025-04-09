@@ -1,16 +1,17 @@
 package com.cloud.match;
 
+import com.cloud.match.cluster.ZookeeperCluster;
 import com.cloud.match.config.CloudConfig;
-import com.cloud.match.server.MatchServer;
-import com.cloud.match.server.MatchServerFactory;
+import com.cloud.match.config.ZkConfig;
+import com.cloud.match.server.LeaderTask;
+import com.cloud.match.server.LeaderTaskImpl;
+import com.cloud.match.service.impl.MatchServerManager;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.collections.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
-import java.util.List;
+
 
 @Slf4j
 @Component
@@ -18,32 +19,30 @@ public class ApplicationStartup implements ApplicationListener<ContextRefreshedE
     private volatile boolean started = false;
 
     @Autowired
-    private CloudConfig cloudConfig;
+    private ZkConfig zkConfig;
 
     @Autowired
-    MatchServerFactory matchServerFactory;
+    CloudConfig cloudConfig;
+
+    @Autowired
+    MatchServerManager matchServerManager;
+
+    private ZookeeperCluster cluster;
 
     @Override
     public void onApplicationEvent(ContextRefreshedEvent event) {
-        if (!started) {
-            started = true;
-            List<String> shards = cloudConfig.getSymbols();
-            if (CollectionUtils.isEmpty(shards)) {
-                log.error("[ApplicationStartup] 未分配任何交易对");
-                ((ConfigurableApplicationContext)event.getApplicationContext()).close();
-                return;
+        try {
+            LeaderTask task = new LeaderTaskImpl(cloudConfig, matchServerManager, event);
+            this.cluster = new ZookeeperCluster(zkConfig, task);
+            if (!started) {
+                started = true;
+                log.info("当前节点成为Leader，开始加入集群");
+                this.cluster.join();
             }
-
-            try {
-                for (String shard : shards) {
-                    MatchServer matchServer = matchServerFactory.create(shard);
-                    matchServer.initServer();
-                    matchServer.start(shard);
-                }
-            } catch (Exception e) {
-                log.error("[ApplicationStartup] 启动撮合服务异常，停止启动");
-                ((ConfigurableApplicationContext)event.getApplicationContext()).close();
-            }
+        } catch (Exception e) {
+            log.error("[ApplicationStartup] 撮合启动失败，节点ID: {}", cluster.getNode().getIp());
+        } finally {
+            started = false;
         }
     }
 }

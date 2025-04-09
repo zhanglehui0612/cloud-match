@@ -1,17 +1,22 @@
 package com.cloud.match.server;
 
+import com.cloud.match.enums.MatchEventType;
+import com.cloud.match.event.MatchCancelEvent;
+import com.cloud.match.event.MatchEvent;
 import com.cloud.match.model.*;
-import com.cloud.match.service.PositionManager;
+import com.cloud.match.server.matcher.IMatcher;
+import com.cloud.match.server.matcher.MatcherFactory;
 import com.cloud.match.service.SnapshotService;
-import com.cloud.match.strategies.OrderMatchStrategy;
-import com.cloud.match.strategies.OrderMatchStrategyFactory;
+import com.lmax.disruptor.dsl.Disruptor;
 import lombok.Data;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections.MapUtils;
 
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
+@Slf4j
 @Data
 public class MatchEngine {
     private String symbol;
@@ -24,8 +29,10 @@ public class MatchEngine {
 
     private final SnapshotService snapshotService;
 
-    public MatchEngine(String symbol, SnapshotService snapshotService) {
+    private Disruptor<MatchEvent> disruptor;
+    public MatchEngine(String symbol, Disruptor<MatchEvent> disruptor, SnapshotService snapshotService) {
         this.symbol = symbol;
+        this.disruptor = disruptor;
         this.snapshotService = snapshotService;
     }
 
@@ -61,13 +68,24 @@ public class MatchEngine {
         }
     }
 
-    public MatchResult doMatch(Order order) {
-        OrderMatchStrategy strategy = OrderMatchStrategyFactory.getOrderMatchStrategy(order);
-        return strategy.handle(order, orderBook, userPosition);
+    public void doMatch(Order order) {
+        IMatcher matcher = MatcherFactory.getMatcher(order, disruptor);
+        matcher.match(order, orderBook, userPosition);
     }
 
-    public MatchResult cancelOrder(String orderId) {
-        return null;
+    public void cancelOrder(String orderId) {
+        Order cancelOrder = this.orderBook.getOrderIndex().get(orderId);
+        if (cancelOrder == null) {
+            log.info("Can not found order {}", orderId);
+            return;
+        }
+
+        // 构建取消订单事件，然后进行发布
+        this.getDisruptor().publishEvent((event, seq) -> {
+            MatchCancelEvent matchCancelEvent = new MatchCancelEvent(orderId, cancelOrder.getSize(), "cancel orders", false);
+            event.setMatchEventType(MatchEventType.CANCEL);
+            event.setMatchCancelEvent(matchCancelEvent);
+        });
     }
 
 
@@ -88,5 +106,11 @@ public class MatchEngine {
         }
 
         return offsets.get(this.symbol);
+    }
+
+    public void clear() {
+        orderBook = null;
+        userPosition = null;
+        offset = null;
     }
 }

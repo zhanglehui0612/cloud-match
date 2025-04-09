@@ -1,6 +1,6 @@
 package com.cloud.match.handler;
 
-import com.cloud.match.model.MatchEvent;
+import com.cloud.match.event.OrderEvent;
 import com.cloud.match.server.MatchEngine;
 import org.apache.rocketmq.common.message.MessageExt;
 
@@ -12,7 +12,7 @@ public class CancelOrderMatchHandler implements MatchHandler {
     }
 
     @Override
-    public void match(MessageExt message, MatchEvent<?> event) {
+    public void match(MessageExt message, OrderEvent<?> event) {
         String orderId = (String) event.getEvent();
         this.matchEngine.cancelOrder(orderId);
     }

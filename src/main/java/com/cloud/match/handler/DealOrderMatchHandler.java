@@ -1,7 +1,6 @@
 package com.cloud.match.handler;
 
-import com.alibaba.fastjson.JSON;
-import com.cloud.match.model.MatchEvent;
+import com.cloud.match.event.OrderEvent;
 import com.cloud.match.model.MatchResult;
 import com.cloud.match.model.Order;
 import com.cloud.match.server.MatchEngine;
@@ -21,7 +20,7 @@ public class DealOrderMatchHandler implements MatchHandler {
     }
 
     @Override
-    public void match(MessageExt message,  MatchEvent<?> event) {
+    public void match(MessageExt message,  OrderEvent<?> event) {
         // 1、幂等校验
         long offset = message.getQueueOffset();
         // 之前消息已经处理过

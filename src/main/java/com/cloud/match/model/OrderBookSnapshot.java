@@ -23,3 +23,5 @@ public class OrderBookSnapshot extends Snapshot{
     private ConcurrentHashMap<String, Order> orderIndex = new ConcurrentHashMap<>();
 
 }
+
+

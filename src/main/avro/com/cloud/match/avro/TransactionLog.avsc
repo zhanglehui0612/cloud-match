@@ -1,0 +1,13 @@
+{
+  "namespace": "com.cloud.match.avro",
+  "type": "record",
+  "name": "TransactionLog",
+  "fields": [
+    {"name": "id", "type": "long"},
+    {"name": "symbol", "type": "string"},
+    {"name": "type", "type": "string"},
+    {"name": "timestamp", "type": "long"},
+    {"name": "offset", "type": "long"},
+    {"name": "data", "type": "string"}
+  ]
+}

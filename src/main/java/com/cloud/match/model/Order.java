@@ -22,7 +22,7 @@ public class Order implements Serializable {
     private String symbol;
     private String side;
     private BigDecimal price;
-    private BigDecimal quantity;
+    private BigDecimal size;
     private int orderType;  // Limit 、 Market
     private int timeInForce; // GTC, IOC, FOK
     private boolean hidden;

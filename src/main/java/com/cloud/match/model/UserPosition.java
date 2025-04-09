@@ -24,7 +24,7 @@ public class UserPosition implements Serializable {
 
     public void update(String userId, String symbol, MatchResult matchResult) {
         boolean isBuyParty = matchResult.getBuyerUserId().equals(userId);
-        Order order = isBuyParty ? matchResult.getBuyOrder() :  matchResult.getSellOrder();
+        Order order = isBuyParty ? matchResult.getBuyerOrder() :  matchResult.getSellerOrder();
         List<Position> positions = userPositions.get(userId);
         Optional<Position> optional = positions.stream()
                 .filter(pos -> pos.getSymbol().equals(symbol))
