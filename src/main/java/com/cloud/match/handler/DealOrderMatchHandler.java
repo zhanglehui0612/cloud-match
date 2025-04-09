@@ -1,7 +1,6 @@
 package com.cloud.match.handler;
 
 import com.cloud.match.event.OrderEvent;
-import com.cloud.match.model.MatchResult;
 import com.cloud.match.model.Order;
 import com.cloud.match.server.MatchEngine;
 import com.cloud.match.service.ValidateOrderService;
@@ -37,8 +36,8 @@ public class DealOrderMatchHandler implements MatchHandler {
         }
 
         // 3、开始处理撮合
-        MatchResult matchResult = this.matchEngine.doMatch(order);
-        // 4 根据撮合结果，异步发送撮合结果到消息队列，包括ticker、level、depth以及撮合成交数据和取消数据.这里如果用disruptor就用disruptor， 然后再disruptor发送到对应队列中
-        // 5 你需要考虑，撮合异常如何处理？ 发送消息失败如何处理？
+        this.matchEngine.doMatch(order);
+
+        // 4 你需要考虑，撮合异常如何处理？ 发送消息失败如何处理？
     }
 }

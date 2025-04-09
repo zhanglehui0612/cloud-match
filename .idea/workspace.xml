@@ -4,61 +4,9 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="ba30f939-c3d7-49ca-a5fc-d66dd8ba32eb" name="Changes" comment="first commit">
-      <change afterPath="$PROJECT_DIR$/README.md" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/avro/com/cloud/match/avro/TransactionLog.avsc" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/cluster/Cluster.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/cluster/Node.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/cluster/ZookeeperCluster.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/config/ZkConfig.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/enums/MatchEventType.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/event/LeaderElectedEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/event/MatchCancelEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/event/MatchDealEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/event/MatchEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/event/MatchEventFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/event/SymbolAddEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/event/SymbolRemovedEvent.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/handler/MatchEventHandler.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/listener/MatchSymbolEventListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/listener/SymbolConfigChangeListener.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/LeaderTaskImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/matcher/BaseMatcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/matcher/FOKLimitMatcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/matcher/GTCLimitMatcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/matcher/IMatcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/matcher/IOCLimitMatcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/matcher/LimitMatcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/matcher/MarketMatcher.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/matcher/MatcherFactory.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/rule/IMatchRule.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/rule/MatchablePriceRule.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/rule/MaxMatchRuleRule.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/rule/PostOnlyOrderMatchRule.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/rule/RangePriceMatchRule.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/service/impl/MatchServerManager.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/store/TransactionLogStore.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/store/codec/AvroDeserializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/store/codec/AvroSerializer.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/store/snapshot/SnapshotRestorer.java" afterDir="false" />
+    <list default="true" id="ba30f939-c3d7-49ca-a5fc-d66dd8ba32eb" name="Changes" comment="second commit">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloud/match/ApplicationStartup.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/ApplicationStartup.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloud/match/handler/CancelOrderMatchHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/handler/CancelOrderMatchHandler.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/cloud/match/handler/DealOrderMatchHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/handler/DealOrderMatchHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloud/match/handler/MatchHandler.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/handler/MatchHandler.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloud/match/model/MatchEvent.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/event/OrderEvent.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloud/match/model/MatchResult.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/model/MatchResult.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloud/match/model/Order.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/model/Order.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloud/match/model/OrderBook.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/model/OrderBook.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloud/match/model/OrderBookSnapshot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/model/OrderBookSnapshot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloud/match/model/UserPosition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/model/UserPosition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/MatchEngine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/MatchEngine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/MatchServer.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/MatchServer.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/MatchServerFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/server/MatchServerFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloud/match/service/impl/SnapshotServiceImpl2.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/cloud/match/strategies/MarketOrderMatchStrategy.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/cloud/match/strategies/MarketOrderMatchStrategy.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/application.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/application.properties" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -148,7 +96,7 @@
       <option name="presentableId" value="Default" />
       <updated>1742736811672</updated>
       <workItem from="1742736812780" duration="65906000" />
-      <workItem from="1743577228623" duration="51213000" />
+      <workItem from="1743577228623" duration="51372000" />
     </task>
     <task id="LOCAL-00001" summary="first commit">
       <option name="closed" value="true" />
@@ -166,7 +114,15 @@
       <option name="project" value="LOCAL" />
       <updated>1743407573317</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="second commit">
+      <option name="closed" value="true" />
+      <created>1744204294969</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1744204294969</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -185,7 +141,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="first commit" />
-    <option name="LAST_COMMIT_MESSAGE" value="first commit" />
+    <MESSAGE value="second commit" />
+    <option name="LAST_COMMIT_MESSAGE" value="second commit" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
