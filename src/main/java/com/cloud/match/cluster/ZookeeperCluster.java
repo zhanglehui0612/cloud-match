@@ -111,6 +111,7 @@ public class ZookeeperCluster implements Cluster, LeaderSelectorListener {
 
     @Override
     public void join() throws Exception {
+        start();
         // 注册成员节点
         registerNodePath(node);
 
@@ -171,12 +172,16 @@ public class ZookeeperCluster implements Cluster, LeaderSelectorListener {
     @Override
     public void takeLeadership(CuratorFramework curatorFramework) throws Exception {
         try {
+            // 从Redis获取当前分片节点的offset信息
+            // 如果没有，则继续往下指向
+            // 如果有则从Redis获取到之前主节点是哪一个，然后从Redis获取到的offset信息排除这个主节点之后
+            // 从剩余的中选择offset较大的那一个作为主节点
             this.node.setLeader(true);
             updateNodeInfo();
 
             // 成为Leader后，开始启动撮合
             this.task.doWork();
-
+            // 向Redis写入当前leader节点是哪一个，在选主后才会触发这个操作
             long nextPrint = -1;
             while (!Thread.currentThread().isInterrupted()) {
                 try {
@@ -191,7 +196,7 @@ public class ZookeeperCluster implements Cluster, LeaderSelectorListener {
                     nextPrint = now + 60000;
                 }
             }
-        } finally {
+        } catch (Exception e) {
             // 主动释放 Leader 角色
             node.setLeader(false);
             updateNodeInfo();

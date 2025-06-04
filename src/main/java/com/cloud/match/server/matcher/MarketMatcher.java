@@ -1,6 +1,8 @@
 package com.cloud.match.server.matcher;
 
 
+import com.cloud.match.enums.MatchEventType;
+import com.cloud.match.event.MatchCancelEvent;
 import com.cloud.match.event.MatchEvent;
 import com.cloud.match.model.*;
 import com.cloud.match.server.rule.IMatchRule;
@@ -17,7 +19,12 @@ public class MarketMatcher extends BaseMatcher{
 
     @Override
     public void postMatch(BigDecimal remainSize, Order order, OrderBook orderBook) {
-
+        // IOC 订单无法立即成交的部分需要取消
+        this.getDisruptor().publishEvent((event, seq) -> {
+            MatchCancelEvent matchCancelEvent = new MatchCancelEvent(order.getOrderId(), remainSize, "cancel IOC order", true);
+            event.setMatchEventType(MatchEventType.CANCEL);
+            event.setMatchCancelEvent(matchCancelEvent);
+        });
     }
 
 

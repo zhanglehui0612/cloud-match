@@ -3,7 +3,7 @@ package com.cloud.match.enums;
 public enum OrderType {
 
     MARKET(1, "MARKET"),
-    SELL(2, "LIMIT");
+    LIMIT(2, "LIMIT");
 
     private final int code;
     private final String desc;

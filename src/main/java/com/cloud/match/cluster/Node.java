@@ -25,3 +25,5 @@ public class Node implements Serializable {
         return StringUtils.join(this.getIp(),":",this.getPort());
     }
 }
+
+

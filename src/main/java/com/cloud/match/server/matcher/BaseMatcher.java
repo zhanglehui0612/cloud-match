@@ -11,6 +11,7 @@ import com.cloud.match.server.rule.IMatchRule;
 import com.cloud.match.store.TransactionLogStore;
 import com.lmax.disruptor.dsl.Disruptor;
 import lombok.Getter;
+import org.apache.commons.collections.MapUtils;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
@@ -47,18 +48,21 @@ public abstract class BaseMatcher implements IMatcher{
         // 获取订单方向,然后从买卖盘获取对手盘
         BigDecimal remainSize = order.getSize();
         do {
-            String side = order.getSide();
-            TreeMap<BigDecimal, TimePriorityQueue> counter = orderBook.getCounter(side);
-            Map.Entry<BigDecimal, TimePriorityQueue> entry = counter.firstEntry();
-            TimePriorityQueue queue = entry.getValue();
-            Order countOrder = queue.peek();
+            TimePriorityQueue queue  = findBestPriceQueue(order.getPrice(), order.getSide(), orderBook);
             // 订单簿没有足够的对手方则退出
-            if (Objects.isNull(countOrder)) {
+            if (queue == null) {
                 break;
             }
 
+
+            Order countOrder = queue.peek();
+            // 当前价格队列中没有订单，则从下一个价格队列获取订单
+            if (Objects.isNull(countOrder)) {
+                continue;
+            }
+
             // 产生撮合结果
-            MatchResult result = buildMatchResult(entry.getKey(), order, countOrder);
+            MatchResult result = buildMatchResult(countOrder.getPrice(), order, countOrder);
             // 构建撮合事务日志
             TransactionLog log = buildMatchLog(result);
             // 写入事务日志, 如果失败，则阻塞重试，超过重试次数则告警
@@ -137,6 +141,27 @@ public abstract class BaseMatcher implements IMatcher{
         }
 
         return result;
+    }
+
+
+    private TimePriorityQueue findBestPriceQueue(BigDecimal price, String side, OrderBook orderBook) {
+        TreeMap<BigDecimal, TimePriorityQueue> counter = orderBook.getCounter(side);
+        TimePriorityQueue queue = counter.get(price);
+        if (queue != null) {
+            return queue;
+        }
+
+        if ("BUY".equals(side)) {
+            SortedMap<BigDecimal, TimePriorityQueue> asks =  counter.headMap(price, false).descendingMap();
+            return MapUtils.isEmpty(asks) ? null : asks.entrySet().iterator().next().getValue();
+        }
+
+        if ("SELL".equals(side)) {
+            SortedMap<BigDecimal, TimePriorityQueue> bids =  counter.headMap(price, false);
+            return MapUtils.isEmpty(bids) ? null : bids.entrySet().iterator().next().getValue();
+        }
+
+        return null;
     }
 
 

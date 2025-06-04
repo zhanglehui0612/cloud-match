@@ -1,6 +1,9 @@
 package com.cloud.match.server.matcher;
 
 
+import com.cloud.match.enums.MatcherType;
+import com.cloud.match.enums.OrderType;
+import com.cloud.match.enums.TimeInForce;
 import com.cloud.match.event.MatchEvent;
 import com.cloud.match.model.Order;
 import com.cloud.match.server.rule.*;
@@ -17,9 +20,10 @@ public class MatcherFactory {
     private static final IMatchRule matchablePriceRule = new MatchablePriceRule();
     private static final IMatchRule rangePriceMatchRule = new RangePriceMatchRule();
     private static final IMatchRule postOnlyOrderMatchRule= new PostOnlyOrderMatchRule();
-    private static final Map<Integer, IMatcher> matcherCache = new ConcurrentHashMap<>();
+    private static final Map<MatcherType, IMatcher> matcherCache = new ConcurrentHashMap<>();
     public static IMatcher getMatcher(Order order, Disruptor<MatchEvent> disruptor) {
-        IMatcher matcher = matcherCache.get(order.getOrderType());
+        MatcherType matcherType = getMatcherType(order);
+        IMatcher matcher = matcherCache.get(matcherType);
         if (Objects.nonNull(matcher)) {
             return matcher;
         }
@@ -48,8 +52,24 @@ public class MatcherFactory {
                     matcher = new FOKLimitMatcher(limitMatchRuleList, new TransactionLogStore(), disruptor);
                 }
         }
-
+        matcherCache.put(matcherType, matcher);
         return matcher;
+    }
+
+    private static MatcherType getMatcherType(Order order) {
+        if (order.getOrderType() == OrderType.MARKET.getCode()) {
+            return MatcherType.MARKET_MATCHER;
+        } else if (order.getOrderType() == OrderType.LIMIT.getCode()) {
+            if (order.getTimeInForce() == TimeInForce.GTC.getCode()) {
+                return MatcherType.GTC_MATCHER;
+            } else if (order.getTimeInForce() == TimeInForce.IOC.getCode()) {
+                return MatcherType.IOC_MATCHER;
+            } else if (order.getTimeInForce() == TimeInForce.FOK.getCode()) {
+                return MatcherType.FOK_MATCHER;
+            }
+        }
+
+        return null;
     }
 }
 

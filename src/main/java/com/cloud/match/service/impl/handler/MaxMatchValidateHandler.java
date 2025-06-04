@@ -25,7 +25,7 @@ public class MaxMatchValidateHandler implements ValidateHandler {
         }
         // 处理自己核心逻辑
         BigDecimal maxMatchQty = new BigDecimal("2000");
-        if (order.getQuantity().compareTo(maxMatchQty) > 0) {
+        if (order.getSize().compareTo(maxMatchQty) > 0) {
             throw new ValidationException("订单数量超过最大撮合限制");
         }
         // 调用下一个责任链

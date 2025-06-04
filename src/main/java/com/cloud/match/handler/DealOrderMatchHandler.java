@@ -32,6 +32,7 @@ public class DealOrderMatchHandler implements MatchHandler {
         // 2、订单校验
         boolean result = validateOrderService.validate(order, matchEngine);
         if (!result) {
+            // 生成取消事件，说明取消原因，然后 发送到disruptor异步处理
             return;
         }
 
